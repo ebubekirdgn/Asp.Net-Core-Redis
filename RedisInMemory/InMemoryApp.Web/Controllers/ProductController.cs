@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InMemoryApp.Web.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace InMemoryApp.Web.Controllers
@@ -26,25 +27,27 @@ namespace InMemoryApp.Web.Controllers
                 options.AbsoluteExpiration = DateTime.Now.AddSeconds(10);
                 options.SlidingExpiration = TimeSpan.FromSeconds(10);
                 options.Priority = CacheItemPriority.High; // Ram dolarsa neye göre sileceğini belirleriz.
-                options.RegisterPostEvictionCallback((key,value,reason,state) =>
+                options.RegisterPostEvictionCallback((key, value, reason, state) =>
                 {
                     _memoryCache.Set("callback", $"{key}-> {value} => {reason}");
                 });
 
-                _memoryCache.Set<string>("time", DateTime.Now.ToString(),options);
+                _memoryCache.Set<string>("time", DateTime.Now.ToString(), options);
             }
-
+            Product product = new Product { Id = 1, Name = "Kalem", Price = 200 };
+            _memoryCache.Set<Product>("product:1",product); // Bu datanın cachlenmesini sağlamış olduk.
             return View();
         }
 
         public IActionResult Show()
         {
             //_memoryCache.Remove("Time");
-            _memoryCache.TryGetValue<string>("time",out string timecache);
+            _memoryCache.TryGetValue<string>("time", out string timecache);
             _memoryCache.TryGetValue<string>("callback", out string callback);
 
             ViewBag.Time = timecache;
             ViewBag.CallBack = callback;
+            ViewBag.Product = _memoryCache.Get<Product>("product:1");
             return View();
         }
     }
