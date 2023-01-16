@@ -25,7 +25,7 @@ namespace InMemoryApp.Web.Controllers
                 MemoryCacheEntryOptions options = new();
                 options.AbsoluteExpiration = DateTime.Now.AddMinutes(1);
                 options.SlidingExpiration = TimeSpan.FromSeconds(10);
-
+                options.Priority = CacheItemPriority.High; // Ram dolarsa neye göre sileceğini belirleriz.
 
                 _memoryCache.Set<string>("Time", DateTime.Now.ToString(),options);
             }
