@@ -23,7 +23,8 @@ namespace InMemoryApp.Web.Controllers
             if (!_memoryCache.TryGetValue("Time", out string timecache))
             {
                 MemoryCacheEntryOptions options = new();
-                options.AbsoluteExpiration = DateTime.Now.AddSeconds(10);
+                //options.AbsoluteExpiration = DateTime.Now.AddSeconds(10);
+                options.SlidingExpiration = TimeSpan.FromSeconds(10);
 
 
                 _memoryCache.Set<string>("Time", DateTime.Now.ToString(),options);
