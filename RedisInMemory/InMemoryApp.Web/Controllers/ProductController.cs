@@ -35,7 +35,7 @@ namespace InMemoryApp.Web.Controllers
                 _memoryCache.Set<string>("time", DateTime.Now.ToString(), options);
             }
             Product product = new Product { Id = 1, Name = "Kalem", Price = 200 };
-            _memoryCache.Set<Product>("product:1",product); // Bu datanın cachlenmesini sağlamış olduk.
+            _memoryCache.Set<Product>("product:1", product); // Bu datanın cachlenmesini sağlamış olduk.
             return View();
         }
 

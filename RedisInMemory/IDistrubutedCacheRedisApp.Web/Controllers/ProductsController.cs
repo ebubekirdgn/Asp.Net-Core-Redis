@@ -14,6 +14,22 @@ namespace IDistrubutedCacheRedisApp.Web.Controllers
 
         public IActionResult Index()
         {
+            DistributedCacheEntryOptions distributedCacheEntryOptions = new();
+            distributedCacheEntryOptions.AbsoluteExpiration = DateTime.Now.AddMinutes(1);
+            _distrubutedCache.SetString("name","Ebubekir",distributedCacheEntryOptions);
+            return View();
+        }
+        public IActionResult Show()
+        {
+            string name = _distrubutedCache.GetString("name");
+            ViewBag.Name = name;
+            return View();  
+        }
+
+
+        public IActionResult Remove()
+        {
+            _distrubutedCache.Remove("name");
             return View();
         }
     }
