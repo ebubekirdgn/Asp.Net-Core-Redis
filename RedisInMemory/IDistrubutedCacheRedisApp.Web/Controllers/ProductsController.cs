@@ -36,8 +36,9 @@ namespace IDistrubutedCacheRedisApp.Web.Controllers
             //string surname = _distrubutedCache.GetString("surname");
             //ViewBag.Name = name;
             //ViewBag.Surname = surname;
+            Byte[] byteProduct = _distrubutedCache.Get("product:1");
+            string jsonProduct = Encoding.UTF8.GetString(byteProduct);
 
-            string jsonProduct = _distrubutedCache.GetString("product:1");
             Product p = JsonConvert.DeserializeObject<Product>(jsonProduct);
             ViewBag.ProductName = p;  
             return View();  
@@ -49,5 +50,20 @@ namespace IDistrubutedCacheRedisApp.Web.Controllers
             _distrubutedCache.Remove("name");
             return View();
         }
+    
+        public IActionResult ImageCache()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/images/araba.jpg");
+
+            byte[] imageByte = System.IO.File.ReadAllBytes(path);
+            _distrubutedCache.Set("resim",imageByte);
+            return View();  
+        }
+        public IActionResult ImageUrl()
+        {
+            byte[] resimbyte = _distrubutedCache.Get("resim");
+            return File(resimbyte,"image/jpg");
+        }
+    
     }
 }
