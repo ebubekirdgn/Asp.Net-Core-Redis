@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace IDistrubutedCacheRedisApp.Web.Controllers
 {
@@ -22,7 +23,9 @@ namespace IDistrubutedCacheRedisApp.Web.Controllers
             
             string jsonProduct = JsonConvert.SerializeObject(product);
 
-            await _distrubutedCache.SetStringAsync("product:1",jsonProduct,distributedCacheEntryOptions);
+            Byte[] byteProduct = Encoding.UTF8.GetBytes(jsonProduct);
+            _distrubutedCache.Set("product:1",byteProduct);
+            //await _distrubutedCache.SetStringAsync("product:1",jsonProduct,distributedCacheEntryOptions);
             //_distrubutedCache.SetString("name","Ebubekir",distributedCacheEntryOptions);
             //await _distrubutedCache.SetStringAsync("surname","dogan",distributedCacheEntryOptions);
             return View();
