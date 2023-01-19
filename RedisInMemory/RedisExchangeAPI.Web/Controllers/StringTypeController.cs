@@ -18,6 +18,7 @@ namespace RedisExchangeAPI.Web.Controllers
             db.StringSet("name", "Ebubekir");
             db.StringSet("ziyaretci", 100);
             db.StringIncrement("ziyaretci",20);
+            var data = db.StringDecrementAsync("ziyaretci",15).Result;
             ////GET
             //string value_get = db.StringGet("name");
             ////APPEND
