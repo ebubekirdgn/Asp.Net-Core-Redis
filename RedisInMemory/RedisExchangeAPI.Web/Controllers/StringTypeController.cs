@@ -16,16 +16,18 @@ namespace RedisExchangeAPI.Web.Controllers
             var db = _redisService.GetDb(5);
             //SET
             db.StringSet("name", "Ebubekir");
-            //GET
-            string value_get = db.StringGet("name");
-            //APPEND
-            db.StringAppend("name", "Dogan");
-            string value_append = db.StringGet("name");
-            //INCR
-            db.StringSet("count", 1);
-            long value_count = db.StringIncrement("count");
-            //GETRANGE
-            string value_getrange = db.StringGetRange("name", 1, 2);
+            db.StringSet("ziyaretci", 100);
+            db.StringIncrement("ziyaretci",20);
+            ////GET
+            //string value_get = db.StringGet("name");
+            ////APPEND
+            //db.StringAppend("name", "Dogan");
+            //string value_append = db.StringGet("name");
+            ////INCR
+            //db.StringSet("count", 1);
+            //long value_count = db.StringIncrement("count");
+            ////GETRANGE
+            //string value_getrange = db.StringGetRange("name", 1, 2);
 
             return View();
         }
