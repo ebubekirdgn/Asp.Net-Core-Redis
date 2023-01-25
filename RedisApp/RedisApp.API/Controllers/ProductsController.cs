@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RedisApp.API.Model;
 using RedisApp.API.Repository;
 
 namespace RedisApp.API.Controllers
@@ -14,14 +15,24 @@ namespace RedisApp.API.Controllers
             _productRepository = productRepository;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _productRepository.GetAsync());
         }
 
+
+
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _productRepository.GetByIdAsync(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Product product)
+        {
+            return Ok(await _productRepository.CreateAsync(product));
         }
     }
 }
