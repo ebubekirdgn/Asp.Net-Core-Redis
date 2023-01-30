@@ -12,7 +12,7 @@ namespace RedisApp.API.Repositories
         private readonly RedisService _redisService;
         private readonly IDatabase _cacheRepository;
 
-        public ProductRepositoryWithCacheDecorator(IProductRepository productRepository, RedisService redisService, IDatabase cacheRepository)
+        public ProductRepositoryWithCacheDecorator(IProductRepository productRepository, RedisService redisService)
         {
             _productRepository = productRepository;
             _redisService = redisService;
