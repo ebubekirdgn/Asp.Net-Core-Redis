@@ -1,6 +1,6 @@
 ﻿using RedisApp.API.Model;
 
-namespace RedisApp.API.Repository
+namespace RedisApp.API.Repositories
 {
     public interface IProductRepository
     {

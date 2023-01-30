@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RedisApp.API.Repository;
+using RedisApp.API.Repositories;
 
 namespace RedisApp.API.Model
 {
