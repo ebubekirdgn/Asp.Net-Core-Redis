@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RedisApp.API.Model;
 using RedisApp.API.Repositories;
+using RedisApp.API.Services;
 using RedisApp.Cache;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,19 +9,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductService, ProductService>();
 
-builder.Services.AddScoped<IProductRepository>(sp => 
+builder.Services.AddScoped<IProductRepository>(sp =>
 {
-    var appDbContext = sp.GetRequiredService<AppDbContext>(); 
-    
+    var appDbContext = sp.GetRequiredService<AppDbContext>();
+
     var productRepository = new ProductRepository(appDbContext);
 
     var redisService = sp.GetRequiredService<RedisService>();
 
-    return new ProductRepositoryWithCacheDecorator(productRepository,redisService);    
+    return new ProductRepositoryWithCacheDecorator(productRepository, redisService);
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>

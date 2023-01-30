@@ -7,7 +7,7 @@ namespace RedisApp.API.Repositories
 {
     public class ProductRepositoryWithCacheDecorator : IProductRepository
     {
-        private const string productKey = "productCache";
+        private const string productKey = "productCaches";
         private readonly IProductRepository _productRepository;
         private readonly RedisService _redisService;
         private readonly IDatabase _cacheRepository;
@@ -23,7 +23,7 @@ namespace RedisApp.API.Repositories
         {
             var newProduct = await _productRepository.CreateAsync(product);
 
-            if (!await _cacheRepository.KeyExistsAsync(productKey))
+            if (await _cacheRepository.KeyExistsAsync(productKey))
             {
                 await _cacheRepository.HashSetAsync(productKey, product.Id
              , JsonSerializer.Serialize(newProduct));
@@ -35,9 +35,10 @@ namespace RedisApp.API.Repositories
         {
             if (!await _cacheRepository.KeyExistsAsync(productKey))
                 return await LoadToCacheFromDbAsync();
+
             var products = new List<Product>();
-            var cacheProducts = (await _cacheRepository.HashGetAllAsync(productKey)).ToList();
-            foreach (var item in cacheProducts)
+            var cacheProducts = await _cacheRepository.HashGetAllAsync(productKey);
+            foreach (var item in cacheProducts.ToList())
             {
                 var product = JsonSerializer.Deserialize<Product>(item.Value);
                 products.Add(product);
